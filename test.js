@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Cat = require('./models/Cat');
 
 async function main() {
 
@@ -8,18 +9,19 @@ mongoose.set('strictQuery', false)
 
 }
 
-const catsSchema = new mongoose.Schema({
-    "name": {
-        "type":String,
-        "required": true
-    },
-    "age": Number,
-    "breed": {
-        "type" : String,
-        "enum": ["EKH", "British", "Persian", "Angora"]
-    }
+
+const newCat = new Cat({
+    "name": "Shoshko",
+    "age": 5,
+    "breed": "Persian"
 })
 
-const Cat = mongoose.model("Cat", catsSchema)
+async function saveCat(name) {
+    await newCat.save();
+    const data = await Cat.find({name});
+    console.log(data);
+}
+
+saveCat(newCat.name)
 
 main();
